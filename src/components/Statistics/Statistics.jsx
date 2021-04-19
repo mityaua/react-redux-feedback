@@ -1,55 +1,49 @@
 import PropTypes from 'prop-types';
+import StatisticsTotal from '../StatisticsTotal';
 import Notification from '../Notification';
 
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; // Импорт функции конектита к глобальному хранилищу
 
 import styles from './Statistics.module.scss';
 
 const Statistics = ({ feedback }) => {
-  // Вынести метод из компонента
+  // Считает общее количество отзывов
   const total = Object.keys(feedback).reduce(
     (acc, value) => acc + feedback[value],
     0,
   );
 
-  // Вынести метод из компонента
-  const percent = Math.round((feedback.good * 100) / total || null);
+  // Считает процент хороших отзывов
+  const percent = Math.round((feedback.good / total) * 100 || null);
 
   return (
-    <div>
+    <>
       {!!total ? (
-        <ul>
-          <li className={styles.item}>
-            <p>
-              Good: <span className={styles.value}>{feedback.good}</span>
-            </p>
-          </li>
-          <li className={styles.item}>
-            <p>
-              Neutral: <span className={styles.value}>{feedback.neutral}</span>
-            </p>
-          </li>
-          <li className={styles.item}>
-            <p>
-              Bad: <span className={styles.value}>{feedback.bad}</span>
-            </p>
-          </li>
-          <li className={styles.item}>
-            <p>
-              Total: <span className={styles.value}>{total}</span>
-            </p>
-          </li>
-          <li className={styles.item}>
-            <p>
-              Positive feedback:{' '}
-              <span className={styles.value}>{percent}%</span>
-            </p>
-          </li>
-        </ul>
+        <>
+          <ul className={styles.list}>
+            <li className={styles.item}>
+              <p>
+                Good: <span className={styles.value}>{feedback.good}</span>
+              </p>
+            </li>
+            <li className={styles.item}>
+              <p>
+                Neutral:{' '}
+                <span className={styles.value}>{feedback.neutral}</span>
+              </p>
+            </li>
+            <li className={styles.item}>
+              <p>
+                Bad: <span className={styles.value}>{feedback.bad}</span>
+              </p>
+            </li>
+          </ul>
+          <StatisticsTotal total={total} percent={percent} />
+        </>
       ) : (
         <Notification message={'No feedback given'} />
       )}
-    </div>
+    </>
   );
 };
 
@@ -61,6 +55,7 @@ Statistics.propTypes = {
   }),
 };
 
+// Из стейта в пропы
 const mapStateToProps = state => ({
   feedback: state.feedback,
 });

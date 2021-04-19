@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
-import { connect } from 'react-redux'
-import * as actions from '../../redux/actions';
+import { connect } from 'react-redux'; // Импорт функции конектита к глобальному хранилищу
+import * as actions from '../../redux/feedback/feedback-actions'; // Импорт всех экшенов из папки фидбека
 
 import styles from './FeedbackOptions.module.scss';
 
@@ -34,13 +34,15 @@ FeedbackOptions.propTypes = {
   onLeaveFeedback: PropTypes.func.isRequired,
 };
 
+// Из стейта в пропы
 const mapStateToProps = state => ({
   feedback: state.feedback,
 });
 
+// Из стейта в пропы для методов
 const mapDispatchToProps = dispatch => ({
-  onLeaveFeedback: event => dispatch(actions.onLeaveFeedback(event.target.textContent)),
+  onLeaveFeedback: event =>
+    dispatch(actions.onLeaveFeedback(event.target.textContent)),
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedbackOptions);

@@ -1,30 +1,14 @@
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux'; // Импортирует функцию создания хранилища и комбайн редюсеров
+import { composeWithDevTools } from 'redux-devtools-extension'; // Импортирует прослойку для дев тулзов (до тулкита)
 
-const initialState = {
-  feedback: {
-    good: 0,
-    neutral: 0,
-    bad: 0,
-  },
-};
+import feedbackReducer from './feedback/feedback-reducer';
 
-// Редюсер с пустым стейтом (пустой обьект) и экшеном (пропускает через себя все экшены). Возвращает стейт.
-const reducer = (state = initialState, { type, payload }) => {
-  switch (type) {
-    case 'counter/onLeaveFeedback':
-      return {
-        ...state,
-        feedback: {
-          ...state.feedback,
-          [payload]: (state.feedback[payload] += 1),
-        },
-      };
+// Композиция редюсеров (собирает все редюсеры в корневой редюсер)
+const rootReducer = combineReducers({
+  feedback: feedbackReducer,
+});
 
-    default:
-      return state;
-  }
-};
-
-const store = createStore(reducer);
+// Создает хранилище + с корневым редюсером и прослойкой
+const store = createStore(rootReducer, composeWithDevTools());
 
 export default store;
