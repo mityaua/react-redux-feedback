@@ -6,19 +6,10 @@ import { connect } from 'react-redux'; // Импорт функции конек
 
 import styles from './Statistics.module.scss';
 
-const Statistics = ({ feedback }) => {
-  // Считает общее количество отзывов
-  const total = Object.keys(feedback).reduce(
-    (acc, value) => acc + feedback[value],
-    0,
-  );
-
-  // Считает процент хороших отзывов
-  const percent = Math.round((feedback.good / total) * 100 || null);
-
+const Statistics = ({ feedback, total, percent }) => {
   return (
     <>
-      {!!total ? (
+      {total ? (
         <>
           <ul className={styles.list}>
             <li className={styles.item}>
@@ -55,9 +46,22 @@ Statistics.propTypes = {
   }),
 };
 
+// Считает общее количество отзывов
+const getTotalFeedback = state =>
+  Object.keys(state).reduce((acc, value) => acc + state[value], 0);
+
+// Считает процент хороших отзывов
+const getPositivePercent = (goodFeedback, totalFeedback) =>
+  Math.round((goodFeedback / totalFeedback) * 100 || null);
+
 // Из стейта в пропы
 const mapStateToProps = state => ({
   feedback: state.feedback,
+  total: getTotalFeedback(state.feedback),
+  percent: getPositivePercent(
+    state.feedback.good,
+    getTotalFeedback(state.feedback),
+  ),
 });
 
 export default connect(mapStateToProps)(Statistics);

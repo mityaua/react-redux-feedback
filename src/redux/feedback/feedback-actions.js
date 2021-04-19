@@ -1,7 +1,5 @@
-import actionTypes from './feedback-types'; // Импорт типов
+import { createAction } from '@reduxjs/toolkit'; // Импорт функции создания экшена
 
-// Экшн-криейтор это функция, возвращает обьект (действие), со свойством type (уникальная строка) и свойством value (payload)
-export const onLeaveFeedback = value => ({
-  type: actionTypes.LEAVE,
-  payload: value,
-});
+// Функция создания обьекта экшена, со свойством type (строка) и свойством value (payload).
+// Если нужны манипуляции с обьектом, тогда использует Prepare Callback
+export const onLeaveFeedback = createAction('counter/onLeaveFeedback');

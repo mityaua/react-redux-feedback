@@ -1,14 +1,20 @@
-import { createStore, combineReducers } from 'redux'; // Импортирует функцию создания хранилища и комбайн редюсеров
-import { composeWithDevTools } from 'redux-devtools-extension'; // Импортирует прослойку для дев тулзов (до тулкита)
+import { configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
+import sessionStorage from 'redux-persist/lib/storage/session';
 
 import feedbackReducer from './feedback/feedback-reducer';
 
-// Композиция редюсеров (собирает все редюсеры в корневой редюсер)
-const rootReducer = combineReducers({
-  feedback: feedbackReducer,
-});
+const persistConfig = {
+  key: 'feedback',
+  storage: sessionStorage,
+};
 
-// Создает хранилище + с корневым редюсером и прослойкой
-const store = createStore(rootReducer, composeWithDevTools());
+// Создает хранилище + корневой редюсер + тулзами только для разработки
+const store = configureStore({
+  reducer: {
+    feedback: feedbackReducer,
+  },
+  devTools: process.env.NODE_ENV === 'development',
+});
 
 export default store;
