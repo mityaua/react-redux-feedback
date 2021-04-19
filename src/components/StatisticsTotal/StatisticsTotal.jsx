@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import styles from './StatisticsTotal.module.scss';
 
+// Компонент результата подсчёта отзывов
 const StatisticsTotal = ({ total, percent }) => {
   return (
     <div>
