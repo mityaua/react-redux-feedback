@@ -38,7 +38,7 @@ const feedbackpersistConfig = {
   storage: sessionStorage,
 };
 
-// Персист редюсер (можно упростить, но нужно отловить баг)
+// Персист редюсер (можно упростить...)
 const persistedReducer = persistReducer(feedbackpersistConfig, rootReducer);
 
 // Создает хранилище + корневой редюсер + тулзами только для разработки
